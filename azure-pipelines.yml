@@ -1,10 +1,9 @@
 trigger: none
-pr: none
 
 resources:
   pipelines:
     - pipeline: infra
-      source: azure-infra-epicbook
+      source: azure-infra-epicbook.git
       trigger: true
 
 variables:
