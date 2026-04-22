@@ -1,12 +1,22 @@
 trigger: none
+pr: none
+
+parameters:
+  - name: infraRunVersion
+    displayName: Infra pipeline run number (optional)
+    type: string
+    default: ""
 
 resources:
   pipelines:
     - pipeline: infra
       source: azure-infra-epicbook
-      branch: main
-      trigger: true
-
+      branch: refs/heads/main
+      trigger:
+        branches:
+          include:
+            - main
+   
 variables:
   - group: epicbook-secrets
   - name: ansibleDir
@@ -125,8 +135,9 @@ steps:
     displayName: Test Ansible connectivity
 
   - bash: |
-     ansible -i inventory.ini all -m ping
-     ansible-playbook -i inventory.ini site.yml --extra-vars @deployment-vars.yml
+      set -euo pipefail
+      ansible -i inventory.ini all -m ping
+      ansible-playbook -i inventory.ini site.yml --extra-vars @deployment-vars.yml
     workingDirectory: $(Build.SourcesDirectory)/$(ansibleDir)
     displayName: Run Ansible playbook
 
