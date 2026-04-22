@@ -8,9 +8,11 @@ resources:
 
 variables:
   - group: epicbook-secrets
+  - name: azureServiceConnection
+    value: "azure-devops-connections"
 
 pool:
-  name: 'SelfHostedPool'
+  name: "linux_agent_pool"
 
 steps:
   - checkout: self
