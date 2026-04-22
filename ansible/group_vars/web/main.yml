@@ -6,6 +6,7 @@ nginx_port: 80
 backend_host: 127.0.0.1
 backend_port: 8080
 db_name: bookstore
+db_user: epicbookadmin
 db_dump_files:
   - "BuyTheBook_Schema.sql"
   - "author_seed.sql"
