@@ -41,7 +41,7 @@ steps:
     name: sshPrivateKey
     displayName: 'Download SSH private key'
     inputs:
-      secureFile: 'id_ed25519.pub'
+      secureFile: 'id_ed25519'
 
   - script: |
       sudo apt-get update
@@ -51,7 +51,7 @@ steps:
   - script: |
       mkdir -p ~/.ssh
       cp "$(sshPrivateKey.secureFilePath)" ~/.ssh/id_rsa
-      chmod 600 ~/.ssh/id_ed25519.pub
+      chmod 600 ~/.ssh/id_ed25519
       ls -l ~/.ssh
     displayName: 'Prepare SSH private key'
 
@@ -63,7 +63,7 @@ steps:
       [web:vars]
       ansible_user=azureuser
       ansible_connection=ssh
-      ansible_ssh_private_key_file=$HOME/.ssh/id_ed25519.pub
+      ansible_ssh_private_key_file=$HOME/.ssh/id_ed25519
       ansible_ssh_common_args='-o StrictHostKeyChecking=no'
       ansible_python_interpreter=/usr/bin/python3
       EOF
@@ -73,13 +73,13 @@ steps:
     displayName: 'Generate inventory.ini'
 
   - script: |
-      ansible all -m ping
+      ansible all -i inventory.ini -m ping
     displayName: 'Test Ansible connectivity'
 
   - script: |
-      ansible-playbook site.yml \
-        -e "db_host=$(db_host)" \
-        -e "db_password=$(db_password)"
+      ansible-playbook -i inventory.ini ansible/site.yml \
+      -e "db_host=$(db_host)" \
+      -e "db_password=$(db_password)"
     displayName: 'Run Ansible playbook'
 
   - script: |
