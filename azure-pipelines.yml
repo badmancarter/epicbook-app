@@ -3,7 +3,7 @@ trigger: none
 resources:
   pipelines:
     - pipeline: infra
-      source: badmancarter.azure-infra-epicbook
+      source: 4
       trigger: true
 
 variables:
